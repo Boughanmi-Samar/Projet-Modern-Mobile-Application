@@ -17,6 +17,12 @@ export async function loginAction(formData: FormData) {
 
   await connectToDatabase();
 
+  // Migrate hashes written under the legacy field name by older seed scripts.
+  await User.collection.updateOne(
+    { email, password: { $exists: false }, motDePasse: { $type: 'string' } },
+    { $rename: { motDePasse: 'password' } }
+  );
+
   // If database is empty, seed it on first login attempt!
   const count = await User.countDocuments();
   if (count === 0) {
@@ -26,6 +32,13 @@ export async function loginAction(formData: FormData) {
   const user = await User.findOne({ email }).populate('groupe');
   if (!user) {
     return { success: false, error: 'Identifiants incorrects (email non trouvé).' };
+  }
+
+  if (!user.password) {
+    return {
+      success: false,
+      error: 'Ce compte ne possède pas de mot de passe valide. Contactez un administrateur pour le réinitialiser.',
+    };
   }
 
   const isValid = await comparePassword(password, user.password);

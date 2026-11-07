@@ -15,11 +15,10 @@ const MONGO_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/uniconne
 const UserSchema = new mongoose.Schema({
   nom: String,
   email: { type: String, unique: true },
-  motDePasse: String,
+  password: { type: String, required: true },
   role: { type: String, enum: ['admin', 'teacher', 'student'] },
   groupe: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
   telephone: String,
-  actif: { type: Boolean, default: true },
 }, { timestamps: true });
 
 const DepartmentSchema = new mongoose.Schema({ nom: String, code: String, description: String }, { timestamps: true });
@@ -90,13 +89,13 @@ async function seed() {
   // 4. Utilisateurs
   const [pwAdmin, pwProf, pwEtu] = await Promise.all([hashPwd('admin123'), hashPwd('prof123'), hashPwd('etudiant123')]);
 
-  const admin = await User.create({ nom: 'Administrateur UniConnect', email: 'admin@uniconnect.tn', motDePasse: pwAdmin, role: 'admin' });
-  const prof1  = await User.create({ nom: 'Prof. Jean Dupont', email: 'prof.dupont@uniconnect.tn', motDePasse: pwProf, role: 'teacher', telephone: '+216 71 234 567' });
-  const prof2  = await User.create({ nom: 'Prof. Sami Benali', email: 'prof.benali@uniconnect.tn', motDePasse: pwProf, role: 'teacher', telephone: '+216 71 345 678' });
-  const etu1   = await User.create({ nom: 'Ali Ben Salah', email: 'etudiant.ali@uniconnect.tn', motDePasse: pwEtu, role: 'student', groupe: groupeGL1._id });
-  const etu2   = await User.create({ nom: 'Sarah Trabelsi', email: 'etudiant.sarah@uniconnect.tn', motDePasse: pwEtu, role: 'student', groupe: groupeGL1._id });
-  const etu3   = await User.create({ nom: 'Youssef Maaroufi', email: 'etudiant.youssef@uniconnect.tn', motDePasse: pwEtu, role: 'student', groupe: groupeGL1._id });
-  const etu4   = await User.create({ nom: 'Nour Khelifi', email: 'etudiant.nour@uniconnect.tn', motDePasse: pwEtu, role: 'student', groupe: groupeGL2._id });
+  const admin = await User.create({ nom: 'Administrateur UniConnect', email: 'admin@uniconnect.tn', password: pwAdmin, role: 'admin' });
+  const prof1  = await User.create({ nom: 'Prof. Jean Dupont', email: 'prof.dupont@uniconnect.tn', password: pwProf, role: 'teacher', telephone: '+216 71 234 567' });
+  const prof2  = await User.create({ nom: 'Prof. Sami Benali', email: 'prof.benali@uniconnect.tn', password: pwProf, role: 'teacher', telephone: '+216 71 345 678' });
+  const etu1   = await User.create({ nom: 'Ali Ben Salah', email: 'etudiant.ali@uniconnect.tn', password: pwEtu, role: 'student', groupe: groupeGL1._id });
+  const etu2   = await User.create({ nom: 'Sarah Trabelsi', email: 'etudiant.sarah@uniconnect.tn', password: pwEtu, role: 'student', groupe: groupeGL1._id });
+  const etu3   = await User.create({ nom: 'Youssef Maaroufi', email: 'etudiant.youssef@uniconnect.tn', password: pwEtu, role: 'student', groupe: groupeGL1._id });
+  const etu4   = await User.create({ nom: 'Nour Khelifi', email: 'etudiant.nour@uniconnect.tn', password: pwEtu, role: 'student', groupe: groupeGL2._id });
   console.log('✅  Utilisateurs créés.');
 
   // 5. Matières

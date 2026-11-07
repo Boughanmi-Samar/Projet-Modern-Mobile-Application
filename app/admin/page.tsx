@@ -68,10 +68,7 @@ export default async function AdminDashboard() {
               'use server';
               await seedDatabaseAction(true);
             }}>
-              <SubmitButton variant="secondary" className="text-xs py-2 h-auto bg-white/10 hover:bg-white/20 text-white border border-white/20">
-                <Database className="w-3.5 h-3.5 text-[#03c9d7]" />
-                <span>Réinitialiser les données de démo</span>
-              </SubmitButton>
+  
             </form>
           </div>
         </div>

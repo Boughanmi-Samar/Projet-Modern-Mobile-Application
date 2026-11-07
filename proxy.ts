@@ -6,7 +6,7 @@ const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'uniconnect_super_secret_jwt_key_2026_dev_secure_change_in_production'
 );
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Skip public assets, PWA manifest, service worker, offline page, favicon

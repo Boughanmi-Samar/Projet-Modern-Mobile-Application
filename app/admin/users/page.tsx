@@ -69,13 +69,13 @@ export default async function AdminUsersPage({
           Tous ({counts.all})
         </Link>
         <Link href="/admin/users?role=admin" className={tabClass(role === 'admin')}>
-          👑 Admins ({counts.admin})
+           Admins ({counts.admin})
         </Link>
         <Link href="/admin/users?role=teacher" className={tabClass(role === 'teacher')}>
-          👨‍🏫 Enseignants ({counts.teacher})
+           Enseignants ({counts.teacher})
         </Link>
         <Link href="/admin/users?role=student" className={tabClass(role === 'student')}>
-          🎓 Étudiants ({counts.student})
+          Étudiants ({counts.student})
         </Link>
       </div>
 
